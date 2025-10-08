@@ -9,6 +9,7 @@ public class ContaAPagarService : IContaAPagarService
         _context = context;
     }
 
+    // Regra para o cadastro das Contas
     public async Task<Contas> CadastrarConta(CadastrarContaAPagarDto contaDto)
     {
         int diasEmAtraso = 0;
@@ -47,6 +48,7 @@ public class ContaAPagarService : IContaAPagarService
             valorCorrigido = contaDto.ValorOriginal + valorMulta + valorJuros;
         }
 
+        //Criaçao da conta
         var novaConta = new Contas
         {
             Nome = contaDto.Nome,
@@ -65,6 +67,7 @@ public class ContaAPagarService : IContaAPagarService
         return novaConta;
     }
 
+    // Listagem das Contas
     public async Task<IEnumerable<Contas>> ListarContas()
     {
         return await _context.Contas.ToListAsync();
