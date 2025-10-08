@@ -5,7 +5,7 @@ API REST desenvolvida em **C# (.NET 9.0)** para controle de **contas a pagar**, 
 
 ## 🚀 Tecnologias Utilizadas
 
-- C# (.NET Core 3.1)
+- C# (.NET 9.0)
 - Entity Framework Core
 - PostgreSQL
 - Injeção de Dependência (DI)
