@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class ContaAPagarService : IContaAPagarService
 {
     private readonly AppDbContext _context;
@@ -25,17 +27,17 @@ public class ContaAPagarService : IContaAPagarService
             if (diasEmAtraso <= 3)
             {
                 percentualMulta = 0.02m;
-                percentualJurosAoDia = 0.0001m;
+                percentualJurosAoDia = 0.001m;
             }
             else if (diasEmAtraso <= 5)
             {
                 percentualMulta = 0.03m;
-                percentualJurosAoDia = 0.0002m;
+                percentualJurosAoDia = 0.002m;
             }
             else
             {
                 percentualMulta = 0.05m;
-                percentualJurosAoDia = 0.0003m;
+                percentualJurosAoDia = 0.003m;
             }
 
             // Calcular valor Corrigido
@@ -61,6 +63,11 @@ public class ContaAPagarService : IContaAPagarService
         await _context.SaveChangesAsync();
 
         return novaConta;
+    }
+
+    public async Task<IEnumerable<Contas>> ListarContas()
+    {
+        return await _context.Contas.ToListAsync();
     }
 }
 
