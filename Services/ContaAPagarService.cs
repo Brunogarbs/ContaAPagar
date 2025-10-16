@@ -43,7 +43,7 @@ public class ContaAPagarService : IContaAPagarService
 
             // Calcular valor Corrigido
             decimal valorMulta = contaDto.ValorOriginal * percentualMulta;
-            decimal valorJuros = contaDto.ValorOriginal * percentualJurosAoDia;
+            decimal valorJuros = contaDto.ValorOriginal * (percentualJurosAoDia * diasEmAtraso);
 
             valorCorrigido = contaDto.ValorOriginal + valorMulta + valorJuros;
         }
@@ -72,5 +72,90 @@ public class ContaAPagarService : IContaAPagarService
     {
         return await _context.Contas.ToListAsync();
     }
+
+    // Listar contas por id
+    public async Task<Contas?> ListarContasId(int id)
+    {
+        return await _context.Contas.FindAsync(id);
+    }
+
+    // Atualizar Contas de Compra
+    public async Task<Contas?> AtualizarContas(int id, CadastrarContaAPagarDto contaDto)
+    {
+        var ContaExistente = await _context.Contas.FindAsync(id);
+
+        if (ContaExistente == null)
+        {
+            return null;
+        }
+
+        ContaExistente.Nome = contaDto.Nome;
+        ContaExistente.ValorOriginal = contaDto.ValorOriginal;
+        ContaExistente.DataDeVencimento = contaDto.DataDeVencimento;
+        ContaExistente.DataDePagamento = contaDto.DataDePagamento;
+        int diasEmAtraso = 0;
+        decimal percentualMulta = 0m;
+        decimal percentualJurosAoDia = 0m;
+        decimal valorCorrigido = ContaExistente.ValorOriginal;
+
+        if (ContaExistente.DataDePagamento > ContaExistente.DataDeVencimento)
+        {
+            TimeSpan diferenca = contaDto.DataDePagamento.Date - contaDto.DataDeVencimento.Date;
+            diasEmAtraso = diferenca.Days;
+
+            if (diasEmAtraso <= 3)
+            {
+                percentualMulta = 0.02m;
+                percentualJurosAoDia = 0.001m;
+            }
+            else if (diasEmAtraso <= 5)
+            {
+                percentualMulta = 0.03m;
+                percentualJurosAoDia = 0.001m;
+            }
+            else
+            {
+                percentualMulta = 0.05m;
+                percentualJurosAoDia = 0.003m;
+            }
+            var valorMulta = contaDto.ValorOriginal * percentualMulta;
+            var valorJuros = contaDto.ValorOriginal * percentualJurosAoDia * diasEmAtraso;
+
+            ContaExistente.DiasEmAtraso = diasEmAtraso;
+            ContaExistente.MultaAplicadaPercentual = percentualMulta;
+            ContaExistente.JurosAoDiaAplicadoPercentual = percentualJurosAoDia;
+            ContaExistente.ValorCorrigido = Math.Round(contaDto.ValorOriginal + valorMulta + valorJuros, 2);
+
+        }
+        else
+        {
+            ContaExistente.DiasEmAtraso = 0;
+            ContaExistente.JurosAoDiaAplicadoPercentual = 0m;
+            ContaExistente.MultaAplicadaPercentual = 0m;
+            ContaExistente.ValorCorrigido = contaDto.ValorOriginal;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return ContaExistente;
+    }
+
+    public async Task<Contas?> ExcluirConta(int id)
+    {
+        var ContaExcluida = await _context.Contas.FindAsync(id);
+
+        if (ContaExcluida == null)
+        {
+            return null;
+        }
+
+        _context.Contas.Remove(ContaExcluida);
+
+        await _context.SaveChangesAsync();
+
+        return ContaExcluida;
+
+    }
 }
+
 

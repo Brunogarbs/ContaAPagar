@@ -54,3 +54,32 @@ Retorna:
 - `MultaAplicadaPercentual`
 - `JurosAoDiaAplicadoPercentual`
 
+---
+
+#### 📋 Listagem de Conta Cadastrada por ID
+**GET** `/api/contaAPagar/Id`
+
+Retorna:
+- `Id`
+- `Nome`
+- `ValorOriginal`
+- `DataDeVencimento`
+- `DataDePagamento`
+- `ValorCorrigido`
+- `DiasEmAtraso`
+- `MultaAplicadaPercentual`
+- `JurosAoDiaAplicadoPercentual`
+
+
+#### 📋 Atualização da Conta a Pagar
+**PUT** `/api/contaAPagar/Id`
+
+Campos obrigatórios:
+- `Nome`: texto  
+- `ValorOriginal`: decimal  
+- `DataVencimento`: data  
+- `DataPagamento`: data  
+
+#### 📋 Deletar Conta
+**PUT** `/api/contaAPagar/Id`
+

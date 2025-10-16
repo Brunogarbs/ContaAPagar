@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ContaAPagar")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be419cbd0f9aad8fadfbf447e1e684c5dac16abb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85be7d18a926aa70a419dc123068e7f0792eb933")]
 [assembly: System.Reflection.AssemblyProductAttribute("ContaAPagar")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ContaAPagar")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
